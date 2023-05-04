@@ -114,14 +114,17 @@ def play(args):
     # Configure streaming server
     logging.info("Configuring streaming server")
 
-    target_ip = device["hostname"]
-    if args.local_host:
-        serve_ip = args.local_host
+    if args.url:
+        files_urls = files
     else:
-        serve_ip = streaming.get_serve_ip(target_ip)
-    files_urls = streaming.start_server(files, serve_ip)
+        target_ip = device["hostname"]
+        if args.local_host:
+            serve_ip = args.local_host
+        else:
+            serve_ip = streaming.get_serve_ip(target_ip)
+        files_urls = streaming.start_server(files, serve_ip)
 
-    logging.info("Streaming server ready")
+        logging.info("Streaming server ready")
 
     # Register handler if interrupt signal is received
     signal.signal(signal.SIGINT, build_handler_stop(device))
@@ -195,6 +198,8 @@ def run():
     p_play.add_argument("-s", "--subtitle", dest="file_subtitle")
     p_play.add_argument("-n", "--no-subtitle",
                         dest="use_subtitle", action="store_false")
+    p_play.add_argument("-u", "--url",
+                        dest="url", action="store_true")
     p_play.add_argument("file_video")
     p_play.set_defaults(func=play)
 
