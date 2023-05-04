@@ -57,7 +57,7 @@ def list_devices(args):
     logging.info("Number of devices found: {}".format(len(my_devices)))
 
     for i, device in enumerate(my_devices, 1):
-        print("Device {0}:\n{1}\n\n".format(i, json.dumps(device, indent=4)))
+        print("Device {0}:\n{1}\n\n".format(i, json.dumps(device, ensure_ascii=False, indent=4)))
 
 
 def find_device(args):
@@ -103,13 +103,13 @@ def play(args):
         if args.file_subtitle:
             files["file_subtitle"] = args.file_subtitle
 
-    logging.info("Media files: {}".format(json.dumps(files)))
+    logging.info("Media files: {}".format(json.dumps(files, ensure_ascii=False, indent=4)))
 
     device = find_device(args)
     if not device:
         sys.exit("No devices found.")
 
-    logging.info("Device selected: {}".format(json.dumps(device)))
+    logging.info("Device selected: {}".format(json.dumps(device, ensure_ascii=False, indent=4)))
 
     # Configure streaming server
     logging.info("Configuring streaming server")
